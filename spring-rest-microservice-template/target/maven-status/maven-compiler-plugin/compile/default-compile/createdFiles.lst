@@ -1,0 +1,8 @@
+com/example/dto/TransactionDto.class
+com/example/aggregator/ExampleAggregator.class
+com/example/exception/DefaultException.class
+com/example/App.class
+com/example/controller/AppControllerAdvice.class
+com/example/util/SimpleLogger.class
+com/example/exception/ErrorDetails.class
+com/example/controller/HelloController.class

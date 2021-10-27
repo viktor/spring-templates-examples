@@ -1,0 +1,8 @@
+/Users/victor/dev/test/spring-rest-microservice-template/src/main/java/com/example/util/SimpleLogger.java
+/Users/victor/dev/test/spring-rest-microservice-template/src/main/java/com/example/controller/AppControllerAdvice.java
+/Users/victor/dev/test/spring-rest-microservice-template/src/main/java/com/example/App.java
+/Users/victor/dev/test/spring-rest-microservice-template/src/main/java/com/example/aggregator/ExampleAggregator.java
+/Users/victor/dev/test/spring-rest-microservice-template/src/main/java/com/example/dto/TransactionDto.java
+/Users/victor/dev/test/spring-rest-microservice-template/src/main/java/com/example/controller/HelloController.java
+/Users/victor/dev/test/spring-rest-microservice-template/src/main/java/com/example/exception/DefaultException.java
+/Users/victor/dev/test/spring-rest-microservice-template/src/main/java/com/example/exception/ErrorDetails.java
