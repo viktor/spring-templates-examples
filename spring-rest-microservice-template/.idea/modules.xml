@@ -2,7 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/ms-customers.iml" filepath="$PROJECT_DIR$/ms-customers.iml" />
+      <module fileurl="file://$PROJECT_DIR$/spring-rest-microservice-template.iml" filepath="$PROJECT_DIR$/spring-rest-microservice-template.iml" />
+      <module fileurl="file://$PROJECT_DIR$/spring-rest-microservice-template.iml" filepath="$PROJECT_DIR$/spring-rest-microservice-template.iml" />
     </modules>
   </component>
 </project>

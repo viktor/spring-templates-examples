@@ -1,3 +1,2 @@
-## Interview Task: lower-or-equal list
+## Example project
 
-Follow the java documentation and implement the `NumberLowerOrEqualService` interface.

@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/interview-task.iml" filepath="$PROJECT_DIR$/interview-task.iml" />
+      <module fileurl="file://$PROJECT_DIR$/spring-test-coderpad-exercises.iml" filepath="$PROJECT_DIR$/spring-test-coderpad-exercises.iml" />
     </modules>
   </component>
 </project>
