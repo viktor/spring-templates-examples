@@ -2,8 +2,8 @@ package com.example;
 
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
 
@@ -34,36 +34,172 @@ import java.util.Objects;
  */
 @Service
 public class ParkingLot {
-    private List<Spot> spots;
-    private List<Vehicle> vehicles;
+    List<Spot> spots = new ArrayList<>();
+    HashMap<Integer, Vehicle> assigments = new HashMap<>();
 
-    
+    public List<Spot> addSpot(Integer number, SpotType spotType){
+        spots.add(new Spot(number, spotType));
+        return spots;
+    }
+
+    public void assign(Integer spotNumber, Vehicle vehicle){
+        Long regulars = spots.stream().filter(s -> s.getType().equals(SpotType.REGULAR)).count();
+        Long compacts = spots.stream().filter(s -> s.getType().equals(SpotType.COMPACT)).count();
+        boolean spotsAvailable = regulars != 0 && compacts != 0;
+
+        // any motorcycle / car should be able to park
+        if(spotsAvailable){
+            if(vehicle.getClass() == Car.class || vehicle.getClass() == Motorcycle.class){
+                assigments.put(findAnySpotNumber(vehicle, regulars.intValue(), compacts.intValue()), vehicle);
+            }else if(vehicle.getClass() == Van.class){
+                List<Integer> vanSpotNos = findVanSpotNumbers(vehicle, regulars.intValue());
+                for (Integer spotNo: vanSpotNos){
+                    assigments.put(spotNo, vehicle);
+                }
+            }
+        }
+    }
+
+    public void removeAssignedVehicle(Integer spotNumber){
+        Set<Integer> assignedSpotNumbers = assigments.keySet();
+        boolean exists = assignedSpotNumbers.stream().filter(
+                s -> s.equals(spotNumber)).findAny().isPresent();
+
+        if(exists){
+            assigments.remove(spotNumber);
+        }
+    }
+
+    public HashMap<Integer, Vehicle> getAssigments() {
+        return assigments;
+    }
+
+    private Integer findAnySpotNumber(Vehicle vehicle, Integer regulars, Integer compacts) {
+        Integer spotNumber = null;
+        Set<Integer> assignedSpotNumbers = assigments.keySet();
+
+        if(vehicle.getClass() == Car.class || vehicle.getClass() == Motorcycle.class){
+            if(compacts > 0){
+                Optional<Spot> spot = findSpot(assignedSpotNumbers, SpotType.COMPACT);
+                return spot.isPresent() ? spot.get().getNumber() : null;
+            }else if(regulars > 0){
+                Optional<Spot> spot = findSpot(assignedSpotNumbers, SpotType.REGULAR);
+                return spot.isPresent() ? spot.get().getNumber() : null;
+            }
+        }
+
+        return spotNumber;
+    }
+
+    private Optional<Spot> findSpot(Set<Integer> assignedSpotNumbers, SpotType spotType) {
+        try{
+            return spots.stream().filter(s ->
+                    assignedSpotNumbers.stream().filter(assigned ->
+                            !assigned.equals(s) && s.getType().equals(spotType)).findAny().isPresent()
+            ).findAny();
+        }catch (Exception e){
+            System.out.println("No spots available " + e.getMessage());
+            return Optional.empty();
+        }
+    }
+
+    private List<Integer> findVanSpotNumbers(Vehicle vehicle, Integer regulars){
+        List<Integer> spotNumber = new ArrayList<>();
+        Set<Integer> assignedSpotNumbers = assigments.keySet();
+
+        if (vehicle.getClass() == Van.class && regulars > 2){
+            List<Integer> vanSpots = findVanSpots(assignedSpotNumbers);
+
+            return spotNumber;
+        }
+
+        return spotNumber;
+    }
+
+    private List<Integer> findVanSpots(Set<Integer> assignedSpotNumbers) {
+        List<Integer> vanSpots = new ArrayList<>();
+
+        try{
+            for (Spot spot: spots) {
+                if(spot.getType().equals(SpotType.REGULAR)){
+                    boolean isAssigned = assignedSpotNumbers.stream().filter(s ->
+                            spot.getNumber().equals(s)).findAny().isPresent();
+                    if(!isAssigned){
+                        vanSpots.add(spot.getNumber());
+                    }
+                }
+            }
+
+            return vanSpots;
+        }catch (Exception e){
+            System.out.println("No spots available " + e.getMessage());
+            return vanSpots;
+        }
+    }
 
 
-    public class Car extends Vehicle{
+
+    public static class Car extends Vehicle{
         public Car(String vin, String model) {
             super(vin, model);
         }
     }
 
-    public class Motorcycle extends Vehicle {
+    public static class Motorcycle extends Vehicle {
         public Motorcycle(String vin, String model) {
             super(vin, model);
         }
     }
 
-    public class Van extends  Vehicle {
+    public static class Van extends  Vehicle {
         public Van(String vin, String model) {
             super(vin, model);
         }
     }
 
-    public class Spot{
+    public static class Spot{
         private Integer number;
         private SpotType type;
+
+        public Spot() { }
+
+        public Spot(Integer number, SpotType type) {
+            this.number = number;
+            this.type = type;
+        }
+
+        public Integer getNumber() {
+            return number;
+        }
+
+        public void setNumber(Integer number) {
+            this.number = number;
+        }
+
+        public SpotType getType() {
+            return type;
+        }
+
+        public void setType(SpotType type) {
+            this.type = type;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+            Spot spot = (Spot) o;
+            return Objects.equals(number, spot.number) &&
+                    type == spot.type;
+        }
+
+        @Override
+        public int hashCode() {
+            return 0;
+        }
     }
 
-    public class Vehicle{
+    public static class Vehicle{
         private String vin;
         private String model;
 
