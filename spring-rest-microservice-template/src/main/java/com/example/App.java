@@ -14,7 +14,7 @@ import org.springframework.web.client.RestTemplate;
  */
 @SpringBootApplication
 @EnableTransactionManagement
-@ComponentScan({"com.example.controller", "com.example.aggregator"})
+@ComponentScan({"com.example.controller", "com.example.aggregator", "com.example.service"})
 public class App {
 
 	  @Bean

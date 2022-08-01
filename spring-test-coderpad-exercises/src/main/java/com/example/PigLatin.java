@@ -47,7 +47,7 @@ public class PigLatin {
                 }
             }else{
                 results.append(word.concat(" "));
-            }
+            } 
         }
 
         return results.toString();
